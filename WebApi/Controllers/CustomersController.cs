@@ -1,6 +1,5 @@
 ﻿using Business.Interface;
 using Business.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
