@@ -60,5 +60,35 @@ namespace Data.Repositories
         }
 
         //DELETE
+
+        public async Task<bool> DeleteAsync(Expression<Func<ProjectEntity, bool>> expression)
+        {
+            if (expression == null)
+                return false;
+
+            try
+            {
+                var existingEntity = await GetAsync(expression);
+                if (existingEntity == null)
+                {
+                    return false;
+                }
+
+                _context.Projects.Remove(existingEntity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleting project entity, {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> ExistsAsync(Expression<Func<ProjectEntity, bool>> expression)
+        {
+            return await _context.Projects.AnyAsync(expression);
+        }
     }
 }

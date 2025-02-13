@@ -47,12 +47,14 @@ namespace Business.Services
 
         }
 
-        public async Task<ResponseResult<Customer?>> GetCUstomerAsync(string customerName)
+        public async Task<ResponseResult<Customer?>> GetCustomerAsync(string customerName)
         {
             var entity = await _customerRepository.GetAsync(x => x.CustomerName == customerName);
             return (ResponseResult<Customer?>)(entity == null
                 ? ResponseResult<Customer?>.NotFound("Customer was not found.")
                 : ResponseResult<Customer?>.Ok(result: CustomerFactory.Create(entity)));
         }
+
+       
     }
 }

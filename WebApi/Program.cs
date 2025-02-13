@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Hampus\\Documents\\Database.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True"));
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer());
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectReposetory>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
