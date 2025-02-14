@@ -1,3 +1,4 @@
+using Business.Factories;
 using Business.Interface;
 using Business.Services;
 using Data.Contexts;
@@ -16,6 +17,9 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer());
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectReposetory>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ProjectFactory>();
+builder.Services.AddScoped<CustomerFactory>();
+
 
 var app = builder.Build();
 app.MapOpenApi();

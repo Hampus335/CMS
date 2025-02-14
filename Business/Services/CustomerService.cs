@@ -1,7 +1,7 @@
 ﻿
 using Business.Factories;
 using Business.Interface;
-using Business.Models.Customer;
+using Business.Models;
 using Business.Models.Response;
 using Data.Interfaces;
 
@@ -54,7 +54,5 @@ namespace Business.Services
                 ? ResponseResult<Customer?>.NotFound("Customer was not found.")
                 : ResponseResult<Customer?>.Ok(result: CustomerFactory.Create(entity)));
         }
-
-       
     }
 }
