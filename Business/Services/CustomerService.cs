@@ -12,7 +12,7 @@ namespace Business.Services
     {
         private readonly ICustomerRepository _customerRepository = customerRepository;
 
-        public async Task<ResponseResult> CreateCustomerAsync(CustomerRegistrationForm form)
+        public async Task<ResponseResult> CreateCustomerAsync(CustomerDTO form)
         {
             var customerEntity = CustomerFactory.Create(form);
             if (customerEntity == null)

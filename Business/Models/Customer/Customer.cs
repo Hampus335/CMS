@@ -1,15 +1,15 @@
 ﻿namespace Business.Models
 {
-    public class Customer
+    public class CustomerDTO
     {
-        public string CustomerName { get; set; } = null!;
-        public string Emai { get; set; }
+        public string Name { get; set; } = null!;
+        public string Email { get; set; } = null!;
     }
 
     public class Customer
     {
         public int Id { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public IEnumerable<Project> Projects { get; set; } = [];
     }

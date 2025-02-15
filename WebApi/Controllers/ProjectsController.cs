@@ -1,6 +1,4 @@
-﻿using Business.Interface;
-using Business.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
@@ -11,11 +9,11 @@ namespace WebApi.Controllers
         private readonly IProjectsService _projectService = projectsService;
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectRegistrationForm form)
+        public async Task<IActionResult> Create(ProjectsRegistrationForm form)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && form.CustomerId < 1)
                 return BadRequest();
-            var result = await _projectService(form);
+            var result = await _projectService.CreateProjectAsync(form);
 
             return (object)result.StatusCode switch
             {
@@ -29,7 +27,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _projectService.g();
+            var projects = await _projectService.GetProjectsAsync();
             return Ok(result.Result);
         }
     }

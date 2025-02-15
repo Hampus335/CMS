@@ -11,5 +11,6 @@ namespace Data.Entities
         public int CustomerId { get; set; }
         public EmployeeEntity ResponsibleEmployee { get; set; }
         public CustomerEntity Customer { get; set; } = null!;
+        public string? Description { get; set; }
     }
 }

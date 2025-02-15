@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Business.Models.Customer
+namespace Business.Models
 {
     internal class CustomerRegistration
     {

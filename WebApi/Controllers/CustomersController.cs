@@ -1,4 +1,5 @@
 ﻿using Business.Interface;
+using Business.Models;
 using Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace WebApi.Controllers
         private readonly ICustomerService _customerService = customerService;
 
         [HttpPost]
-        public async Task<IActionResult> Create(CustomerRegistrationForm form)
+        public async Task<IActionResult> Create(CustomerDTO form)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

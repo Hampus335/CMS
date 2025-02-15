@@ -6,7 +6,7 @@ namespace Business.Interface
 {
     public interface ICustomerService
     {
-        Task<ResponseResult> CreateCustomerAsync(CustomerRegistrationForm form);
+        Task<ResponseResult> CreateCustomerAsync(CustomerDTO form);
 
         Task<ResponseResult<IEnumerable<Customer>>> GetCustomerAsync();
 

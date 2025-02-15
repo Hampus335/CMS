@@ -9,7 +9,9 @@ namespace Data.Entities
         public int Id { get; set; }
         [Column(TypeName ="nvarchar(50")]
         public string CustomerName { get; set; } = null!;
+        public string Email { get; set; } = null!;
 
-        public ICollection<ProjectEntity> Projects = [];
+        public ICollection<ProjectEntity> Projects { get; set; } = [];
+        public string Name { get; set; }
     }
 }
