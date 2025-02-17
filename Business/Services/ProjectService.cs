@@ -5,26 +5,22 @@ using Business.Models;
 using Data.Entities;
 using Data.Interfaces;
 using System.Linq.Expressions;
-
+using WebApi.Controllers;
 
 namespace Business.Services
 {
-    public class ProjectService(IProjectRepository projectRepository, ICustomerRepository customerRepository) : IProjectService
+    public class ProjectService(IProjectRepository projectRepository, ICustomerRepository customerRepository, IProjectFactory projectFactory) : IProjectService
     {
         private readonly IProjectRepository _projectRepository = projectRepository;
         private readonly ICustomerRepository _customerRepository = customerRepository;
-        public ProjectFactory ProjectFactory { get; set; }
-        public ProjectService(ProjectFactory projectFactory)
-        {
-            ProjectFactory = projectFactory;
-        }
+        private readonly IProjectFactory _projectFactory = projectFactory;
 
         public async Task<bool> CreateProjectAsync(ProjectRegistrationForm form)
         {
             if (!await _customerRepository.ExistsAsync(customer => customer.Id == form.CustomerId))
                 return false;
 
-            var projectEntity = ProjectFactory.Create(form);
+            var projectEntity = _projectFactory.Create(form);
             if (projectEntity == null)
                 return false;
 
@@ -33,33 +29,36 @@ namespace Business.Services
 
         }
 
-
-        public async Task<ResponseResult<IEnumerable<Project>>> GetRepositoryAsync()
+            
+        public async Task<IEnumerable<Project>> GetRepositoryAsync()
         {
             var entities = await _projectRepository.GetAllAsync ();
-            return (ResponseResult<IEnumerable<Project>>)ResponseResult<IEnumerable<Project>>.Ok(result: entities.Select(ProjectFactory.Create)!);
+            foreach (var entity in entities)
+            {
+                _projectFactory.
+            }
 
         }
 
-        public async Task<ResponseResult<IEnumerable<Project?>>> GetAllProjectsAsync()
+        public async Task<IEnumerable<Project?>> GetAllProjectsAsync()
         {
             var entities = await _projectRepository.GetAllAsync();
-            var projects = entities.Select(ProjectFactory.Create);
+            var projects = entities.Select(_projectFactory.Create);
             return projects;
         }
-
-        public async Task<ResponseResult<Project?>> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression)
+            
+        public async Task<Project?> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression)
         {
             var entity = await _projectRepository.GetAsync(expression);
-            var project = entity ProjectFactory.Create(entity);
+            var project = projectFactory.Create(entity);;
             return project;
 
         }
 
-        public async Task<ResponseResult<Project?>> UpdateProjectAsync(ProjectUpdateForm form)
+        public async Task<Project?> UpdateProjectAsync(ProjectUpdateForm form)
         {
-            var entity = await _projectRepository.UpdateAsync(ProjectFactory.Create(form));
-            return ResponseResult<Project>.Ok(result: ProjectFactory.Create(entity);
+            var entity = await _projectRepository.UpdateAsync(_projectFactory.Create(form));
+            return _projectFactory.Create(entity);
         }
     }
 }

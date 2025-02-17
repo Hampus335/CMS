@@ -1,10 +1,9 @@
 ﻿using Business.Models;
-using Business.Services;
+using Business.Interface;
 using Data.Entities;
-
 namespace Business.Factories
 {
-    public class ProjectFactory
+    public class ProjectFactory(ProjectFactory projectFactory) : IProjectFactory
     {
         public ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? null : new()
         {
@@ -14,7 +13,7 @@ namespace Business.Factories
         };
 
         public Project Create(ProjectEntity entity)
-        {
+        {   
             if (entity == null)
                 return null;
 

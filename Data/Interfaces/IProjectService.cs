@@ -1,4 +1,4 @@
-﻿namespace Business.Interface
+﻿namespace WebApi.Controllers
 {
     public interface IProjectService
     {
