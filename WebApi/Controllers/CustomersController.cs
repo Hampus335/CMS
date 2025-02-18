@@ -1,6 +1,4 @@
 ﻿using Business.Interface;
-using Business.Models;
-using Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -10,7 +8,7 @@ namespace WebApi.Controllers
     public class CustomersController(ICustomerService customerService) : ControllerBase
     {
         private readonly ICustomerService _customerService = customerService;
-
+        /*
         [HttpPost]
         public async Task<IActionResult> Create(CustomerDTO form)
         {
@@ -26,12 +24,12 @@ namespace WebApi.Controllers
                 _ => Problem(),
             };
         }
-
+        */  
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _customerService.GetCustomerAsync();
-            return Ok(result.Result);
+            var result = await _customerService.GetCustomersAsync();
+            return Ok(result);
         }
     }
 }

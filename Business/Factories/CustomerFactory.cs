@@ -1,12 +1,11 @@
 ﻿using Business.Models;
-using Business.Services;
 using Data.Entities;
 
 namespace Business.Factories
 {
-    public class CustomerFactory
+    public class CustomerFactory : ICustomerFactory
     {
-        public CustomerEntity? Create(CustomerDTO form) => form == null ? default : new()
+        public CustomerEntity? Create(CustomerDTO form) => new()
         {
             CustomerName = form.Name,
             Email = form.Email
@@ -31,7 +30,7 @@ namespace Business.Factories
                     projects.Add(new Project()
                     {
                         Id = project.Id,
-                        Name = project.ProjectName,
+                        Name = project.Name,
                         Description = project.Description,
                         Customer = customer
                     });

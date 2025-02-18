@@ -29,17 +29,6 @@ namespace Business.Services
 
         }
 
-            
-        public async Task<IEnumerable<Project>> GetRepositoryAsync()
-        {
-            var entities = await _projectRepository.GetAllAsync ();
-            foreach (var entity in entities)
-            {
-                _projectFactory.
-            }
-
-        }
-
         public async Task<IEnumerable<Project?>> GetAllProjectsAsync()
         {
             var entities = await _projectRepository.GetAllAsync();
@@ -55,10 +44,15 @@ namespace Business.Services
 
         }
 
-        public async Task<Project?> UpdateProjectAsync(ProjectUpdateForm form)
+        public async Task<bool> UpdateProjectAsync(ProjectUpdateForm form)
         {
-            var entity = await _projectRepository.UpdateAsync(_projectFactory.Create(form));
-            return _projectFactory.Create(entity);
+            var project = _projectFactory.Create(form);
+            var entity = await _projectRepository.UpdateAsync(project);
+            if (entity )
+            {   
+                return true;
+            }
+            return false;
         }
     }
 }

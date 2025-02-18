@@ -1,34 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectsController(IProjectsService projectsService) : ControllerBase
+    public class ProjectsController(IProjectService projectsService) : ControllerBase
     {
-        private readonly IProjectsService _projectService = projectsService;
+        private readonly IProjectService _projectService = projectsService;
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectsRegistrationForm form)
+        public async Task<IActionResult> Create(ProjectRegistrationForm form)
         {
             if (!ModelState.IsValid && form.CustomerId < 1)
                 return BadRequest();
             var result = await _projectService.CreateProjectAsync(form);
-
-            return (object)result.StatusCode switch
-            {
-                201 => Created("", null),
-                400 => BadRequest(result.Message),
-                409 => Conflict(result.Message),
-                _ => Problem(),
-            };
+            return Ok(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var projects = await _projectService.GetProjectsAsync();
-            return Ok(result.Result);
+            var projects = await _projectService.GetAllProjectsAsync();
+            return Ok(projects);
         }
     }
 }

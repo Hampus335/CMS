@@ -3,24 +3,31 @@ using Business.Interface;
 using Data.Entities;
 namespace Business.Factories
 {
-    public class ProjectFactory(ProjectFactory projectFactory) : IProjectFactory
+    public class ProjectFactory : IProjectFactory
     {
-        public ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? null : new()
+        public ProjectEntity? Create(ProjectRegistrationForm form) => new()
         {
-            ProjectName = form.Name,
+            Name = form.Name,
             Description = form.Description,
             CustomerId = form.CustomerId
         };
 
+        public ProjectEntity Create(ProjectUpdateForm form) => new()
+        {
+            Id = form.Id,
+            Name = form.Name,
+            Description = form.Description,
+        };
+
         public Project Create(ProjectEntity entity)
-        {   
+        {
             if (entity == null)
                 return null;
 
             var project = new Project
             {
                 Id = entity.Id,
-                Name = entity.ProjectName,
+                Name = entity.Name,
                 Description = entity.Description
             };
 

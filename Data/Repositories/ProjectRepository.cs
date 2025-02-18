@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 
 namespace Data.Repositories
 {
-    public class ProjectReposetory(DataContext context) : IProjectRepository
+    public class ProjectReposetory(DataContext context) : BaseRepository<ProjectEntity>(context), IProjectRepository
     {
         private readonly DataContext _context = context;
 
         //CREATE
-        public async Task<int> AddAsync(ProjectEntity entity)
+        public async Task<bool> AddAsync(ProjectEntity entity)
         {
             try
             {
@@ -20,13 +20,15 @@ namespace Data.Repositories
 
                 await _context.AddAsync(entity);
                 var result = await _context.SaveChangesAsync();
-                return result;
+                if (result > 0)
+                    return true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 return default;
             }
+            return false;
         }
         //READ
         public async Task<IEnumerable<ProjectEntity>> GetAllAsync()
@@ -42,7 +44,7 @@ namespace Data.Repositories
         }
 
         //UPDATE
-        public async Task<int> UpdateAsync(ProjectEntity entity)
+        public async Task<bool> UpdateAsync(ProjectEntity entity)
         {
             try
             {
@@ -50,13 +52,15 @@ namespace Data.Repositories
 
                 _context.Update(entity);
                 var result = await _context.SaveChangesAsync();
-                return result;
+                if (result > 0)
+                    return true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 return default;
             }
+            return false;
         }
 
         //DELETE

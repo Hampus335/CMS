@@ -1,9 +1,15 @@
-﻿namespace Business.Factories
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Business.Factories
 {
     public class ProjectUpdateForm
     {
-        public int Id { get; internal set; }
-        public string ProjectName { get; internal set; }
-        public int CustomerId { get; internal set; }
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; } = null!;
+        public string? Description { get; set; }
+        [Required]
+        public decimal Price { get; set; }
     }
 }

@@ -2,13 +2,12 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Data.Repositories
 {
-    public class CustomerRepository(DataContext context) : ICustomerRepository
+    public class CustomerRepository(DataContext context) : BaseRepository<CustomerEntity>(context), ICustomerRepository
     {
         private readonly DataContext _context = context;
 
@@ -70,5 +69,29 @@ namespace Data.Repositories
         }
 
         //DELETE
+        public async Task<bool> DeleteAsync(Expression<Func<CustomerEntity, bool>> expression)
+        {
+            if (expression == null)
+                return false;
+
+            try
+            {
+                var existingEntity = await GetAsync(expression);
+                if (existingEntity == null)
+                {
+                    return false;
+                }
+
+                _context.Customers.Remove(existingEntity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleting customer entity, {ex.Message}");
+                return false;
+            }
+        }
     }
 }

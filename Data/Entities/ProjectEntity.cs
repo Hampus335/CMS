@@ -6,7 +6,7 @@ namespace Data.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string ProjectName { get; set; } = null!;
+        public string Name { get; set; } = null!;
         [Required]
         public int CustomerId { get; set; }
         public EmployeeEntity ResponsibleEmployee { get; set; }
