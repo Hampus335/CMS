@@ -1,34 +1,41 @@
 ﻿using Business.Models;
 using Business.Interface;
 using Data.Entities;
+using Data.Contexts;
 namespace Business.Factories
 {
-    public class ProjectFactory : IProjectFactory
+    public class ProjectFactory(DataContext context) : IProjectFactory
     {
-        public ProjectEntity? Create(ProjectRegistrationForm form) => new()
-        {
-            Name = form.Name,
-            Description = form.Description,
-            CustomerId = form.CustomerId
-        };
+        public DataContext _context { get; set; } = context;
 
-        public ProjectEntity Create(ProjectUpdateForm form) => new()
-        {
-            Id = form.Id,
-            Name = form.Name,
-            Description = form.Description,
-        };
 
-        public Project Create(ProjectEntity entity)
+        public ProjectUpdateform? Create(ProjectRegistrationForm form)
+        {
+            var customer = _context.Set<CustomerEntity>().Find(form.CustomerId);
+
+            return new ProjectUpdateform()
+            {
+                Name = form.Name,
+                Description = form.Description,
+                CustomerId = form.CustomerId,
+                CustomerName = customer.Name
+            };
+        }
+
+
+        public Project? Create(ProjectUpdateform entity)
         {
             if (entity == null)
                 return null;
+
+            var customerEntity = _context.Set<CustomerEntity>().Find(entity.CustomerId);
 
             var project = new Project
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Description = entity.Description
+                Description = entity.Description,
+                CustomerName = customerEntity.Name
             };
 
             if (entity.Customer != null)
@@ -38,6 +45,7 @@ namespace Business.Factories
                     Id = entity.Customer.Id,
                     Name = entity.Customer.Name,
                     Email = entity.Customer.Email,
+                    
                 };
             }
 

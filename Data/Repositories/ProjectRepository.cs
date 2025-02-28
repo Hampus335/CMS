@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 
 namespace Data.Repositories
 {
-    public class ProjectReposetory(DataContext context) : BaseRepository<ProjectEntity>(context), IProjectRepository
+    public class ProjectReposetory(DataContext context) :   BaseRepository<ProjectUpdateform>(context), IProjectRepository
     {
         private readonly DataContext _context = context;
 
         //CREATE
-        public async Task<bool> AddAsync(ProjectEntity entity)
+        public async Task<bool> AddAsync(ProjectUpdateform entity)
         {
             try
             {
@@ -26,25 +26,26 @@ namespace Data.Repositories
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.InnerException);
                 return default;
             }
             return false;
         }
         //READ
-        public async Task<IEnumerable<ProjectEntity>> GetAllAsync()
+        public async Task<IEnumerable<ProjectUpdateform>> GetAllAsync()
         {
             var entities = await _context.Projects.ToListAsync();
             return entities;
         }
 
-        public async Task<ProjectEntity?> GetAsync(Expression<Func<ProjectEntity, bool>> expression)
+        public async Task<ProjectUpdateform?> GetAsync(Expression<Func<ProjectUpdateform, bool>> expression)
         {
             var entity = await _context.Projects.FirstOrDefaultAsync(expression);
             return entity;
         }
 
         //UPDATE
-        public async Task<bool> UpdateAsync(ProjectEntity entity)
+        public async Task<bool> UpdateAsync(ProjectUpdateform entity)
         {
             try
             {
@@ -59,13 +60,13 @@ namespace Data.Repositories
             {
                 Debug.WriteLine(ex.Message);
                 return default;
-            }
+            }   
             return false;
         }
 
         //DELETE
 
-        public async Task<bool> DeleteAsync(Expression<Func<ProjectEntity, bool>> expression)
+        public async Task<bool> DeleteAsync(Expression<Func<ProjectUpdateform, bool>> expression)
         {
             if (expression == null)
                 return false;
@@ -90,7 +91,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> ExistsAsync(Expression<Func<ProjectEntity, bool>> expression)
+        public async Task<bool> ExistsAsync(Expression<Func<ProjectUpdateform, bool>> expression)
         {
             return await _context.Projects.AnyAsync(expression);
         }

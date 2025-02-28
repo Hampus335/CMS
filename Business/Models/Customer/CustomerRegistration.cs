@@ -2,9 +2,9 @@
 
 namespace Business.Models
 {
-    internal class CustomerRegistration
+    public class CustomerRegistration
     {
         [Required]
         public string CustomerName { get; set; } = null!;
-    }
+    }   
 }

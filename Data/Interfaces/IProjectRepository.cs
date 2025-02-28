@@ -6,17 +6,17 @@ namespace Data.Interfaces
     public interface IProjectRepository
     {
         // CREATE
-        Task<bool> AddAsync(ProjectEntity entity);
+        Task<bool> AddAsync(ProjectUpdateform entity);
 
         // READ
-        Task<IEnumerable<ProjectEntity>> GetAllAsync();
-        Task<ProjectEntity?> GetAsync(Expression<Func<ProjectEntity, bool>> expression);
+        Task<IEnumerable<ProjectUpdateform>> GetAllAsync();
+        Task<ProjectUpdateform?> GetAsync(Expression<Func<ProjectUpdateform, bool>> expression);
 
         // UPDATE
-        Task<bool> UpdateAsync(ProjectEntity entity);
+        Task<bool> UpdateAsync(ProjectUpdateform entity);
 
         // DELETE
-        Task<bool> DeleteAsync(Expression<Func<ProjectEntity, bool>> expression);
-        Task<bool> ExistsAsync(Expression<Func<ProjectEntity, bool>> expression);
+        Task<bool> DeleteAsync(Expression<Func<ProjectUpdateform, bool>> expression);
+        Task<bool> ExistsAsync(Expression<Func<ProjectUpdateform, bool>> expression);
     }
 }

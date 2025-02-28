@@ -12,7 +12,7 @@ namespace Data.Repositories
         private readonly DataContext _context = context;
 
         //CREATE
-        public async Task<int> AddAsync(CustomerEntity entity)
+        public async Task<bool> AddAsync(CustomerEntity entity)
         {
             try
             {
@@ -20,13 +20,15 @@ namespace Data.Repositories
 
                 await _context.AddAsync(entity);
                 var result = await _context.SaveChangesAsync();
-                return result;
+                if (result > 0)
+                    return true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 return default;
             }
+            return false;
         }
 
 

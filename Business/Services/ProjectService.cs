@@ -2,6 +2,7 @@
 using Business.Factories;
 using Business.Interface;
 using Business.Models;
+using Data.Contexts;
 using Data.Entities;
 using Data.Interfaces;
 using System.Linq.Expressions;
@@ -9,12 +10,18 @@ using WebApi.Controllers;
 
 namespace Business.Services
 {
-    public class ProjectService(IProjectRepository projectRepository, ICustomerRepository customerRepository, IProjectFactory projectFactory) : IProjectService
+    public class ProjectService(IProjectRepository projectRepository, ICustomerRepository customerRepository, IProjectFactory projectFactory, DataContext context) : IProjectService
     {
         private readonly IProjectRepository _projectRepository = projectRepository;
         private readonly ICustomerRepository _customerRepository = customerRepository;
         private readonly IProjectFactory _projectFactory = projectFactory;
+        private readonly DataContext _context = context;
+        
 
+        public async Task<CustomerEntity?> AddCustomerToProject(int customerId)
+        {
+            return await _customerRepository.GetAsync(c => c.Id == customerId);
+        }
         public async Task<bool> CreateProjectAsync(ProjectRegistrationForm form)
         {
             if (!await _customerRepository.ExistsAsync(customer => customer.Id == form.CustomerId))
@@ -26,7 +33,6 @@ namespace Business.Services
 
             bool result = await _projectRepository.AddAsync(projectEntity);
             return result;
-
         }
 
         public async Task<IEnumerable<Project?>> GetAllProjectsAsync()
@@ -36,7 +42,7 @@ namespace Business.Services
             return projects;
         }
             
-        public async Task<Project?> GetProjectAsync(Expression<Func<ProjectEntity, bool>> expression)
+        public async Task<Project?> GetProjectAsync(Expression<Func<ProjectUpdateform, bool>> expression)
         {
             var entity = await _projectRepository.GetAsync(expression);
             var project = projectFactory.Create(entity);;
@@ -44,15 +50,38 @@ namespace Business.Services
 
         }
 
-        public async Task<bool> UpdateProjectAsync(ProjectUpdateForm form)
+        //lite GPT här
+        public async Task<bool> UpdateProjectAsync(ProjectUpdateform form)
         {
-            var project = _projectFactory.Create(form);
-            var entity = await _projectRepository.UpdateAsync(project);
-            if (entity )
-            {   
+            // Hämta befintligt projekt från databasen
+            var existingProject = await _projectRepository.GetAsync(p => p.Id == form.Id);
+            if (existingProject == null)
+            {
+                return false; // Projektet existerar inte
+            }
+
+            // Kontrollera vilka fält som har ändrats och uppdatera endast dessa
+            bool isUpdated = false;
+            if (existingProject.Name != form.Name)
+            {
+                existingProject.Name = form.Name;
+                isUpdated = true;
+            }
+            if (existingProject.Description != form.Description)
+            {
+                existingProject.Description = form.Description;
+                isUpdated = true;
+            }
+
+            // Om inga ändringar har gjorts, returnera true direkt
+            if (!isUpdated)
+            {
                 return true;
             }
-            return false;
+
+            // Uppdatera projektet i databasen
+            return await _projectRepository.UpdateAsync(existingProject);
         }
+
     }
 }

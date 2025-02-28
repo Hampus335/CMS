@@ -5,18 +5,21 @@ namespace Business.Factories
 {
     public class CustomerFactory : ICustomerFactory
     {
-        public CustomerEntity? Create(CustomerDTO form) => new()
+        public CustomerEntity? Create(CustomerDTO form)
         {
-            CustomerName = form.Name,
-            Email = form.Email
-        };
+            return new CustomerEntity()
+            {
+                Name = form.Name,
+                Email = form.Email
+            };
+        }
 
         public Customer? Create(CustomerEntity entity)
         {
             var customer = new Customer()
             {
                 Id = entity.Id,
-                Name = entity.CustomerName,
+                Name = entity.Name,
                 Email = entity.Email,
                 Projects = []
             };  

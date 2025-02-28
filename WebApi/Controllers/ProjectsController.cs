@@ -1,14 +1,16 @@
-﻿using Business.Models;
+﻿using Business.Factories;
+using Business.Interface;
+using Business.Models;
+using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectsController(IProjectService projectsService) : ControllerBase
+    public class ProjectsController(ILogger<ProjectsController> _logger, IProjectService _projectService) : ControllerBase
     {
-        private readonly IProjectService _projectService = projectsService;
-
+    
         [HttpPost]
         public async Task<IActionResult> Create(ProjectRegistrationForm form)
         {
@@ -18,6 +20,22 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, ProjectUpdateform form)
+        {
+            form.Id = id;
+            form.Customer = await _projectService.AddCustomerToProject(id);
+            if (!ModelState.IsValid || form.Id < 1)
+                return BadRequest("Ogiltiga data.");
+
+            var result = await _projectService.UpdateProjectAsync(form);
+
+            if (!result)
+                return NotFound("Projektet kunde inte uppdateras eller hittades inte.");
+
+            return Ok("Projektet har uppdaterats.");
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -25,4 +43,4 @@ namespace WebApi.Controllers
             return Ok(projects);
         }
     }
-}
+}           

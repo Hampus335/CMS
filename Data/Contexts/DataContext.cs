@@ -16,7 +16,7 @@ namespace Data.Contexts
         }
 
         public virtual DbSet<CustomerEntity> Customers { get; set; }
-        public virtual DbSet<ProjectEntity> Projects { get; set; }
+        public virtual DbSet<ProjectUpdateform> Projects { get; set; }
 
     }
 }

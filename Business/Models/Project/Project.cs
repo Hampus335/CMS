@@ -9,6 +9,7 @@ namespace Business.Models
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public Customer Customer { get; set; } = null!;
+        public string CustomerName { get; set; } = null!;
     }
 
     public class ProjectRegistrationForm
